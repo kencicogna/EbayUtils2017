@@ -1,0 +1,218 @@
+﻿@model TTB.Data.PickListViewModel
+
+@{
+    ViewBag.Title = "Pick List Title";
+    Layout = "_Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+
+    <!-- BEGIN HIDDEN FIELDS AREA -->
+    @Html.HiddenFor(m => m.EventCommand)
+    @Html.HiddenFor(m => m.Mode)
+    @Html.HiddenFor(m => m.EventArgument)
+    @Html.HiddenFor(m => m.EventArgLocation)
+    <!-- END HIDDEN FIELDS AREA -->
+
+    
+    <!-- BEGIN SEARCH AREA -->
+    if (Model.IsSearchAreaVisible)
+    {
+        <div class="panel panel-primary">
+            <div class="panel-body">
+                <div class="form-group form-inline">
+                    @Html.Label("Search Title: ")
+                    @Html.TextBoxFor(e => e.SearchEntity.Title, new { @class = "form-control" })
+                </div>
+            </div>        
+            <div class="panel-footer">
+                <button id="btnSearch" class="btn btn-sm btn-primary" data-ttb-action="search">
+                    <i class="glyphicon glyphicon-search"></i> &nbsp; Search
+                </button>
+                <button id="btnReset" class="btn btn-sm btn-primary" data-ttb-action="resetsearch">
+                    <i class="glyphicon glyphicon-share-alt"></i> &nbsp; Reset
+                </button>
+                <button id="btnAdd" class="btn btn-sm btn-primary" data-ttb-action="add">
+                    <i class="glyphicon glyphicon-plus-sign"></i> &nbsp; Add
+                </button>
+            </div>
+        </div>
+    }
+    <!-- END SEARCH AREA -->
+    
+
+    <!-- BEGIN DETAIL (EDIT) AREA -->
+    if(Model.IsDetailAreaVisible)
+    {
+        <div class="panel panel-primary">
+            <div class="panel panel-heading">
+                <h1 class="panel-title">Item Information</h1>
+            </div>
+            <div class="panel-body">
+                <!-- BEGIN MESSAGE AREA -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        @if (!Model.IsValid)
+                        {
+                            <div class="alert alert-danger alert-dismissable" role="alert">
+                                <button type="button" class="close" data-dissmiss="alert">
+                                    <span aria-hidden="true">&times;</span>
+                                    <span class="sr-only">Close</span>
+                                </button>
+                                @Html.ValidationSummary(false)
+                            </div>
+                        }
+                    </div>
+                </div>
+                <!-- END MESSAGE AREA -->
+                <div class="form-group">
+                    @Html.LabelFor(m => m.LineItem.Location, "Location")
+                    @Html.TextBoxFor(m => m.LineItem.Location, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.LineItem.ImageURL, "Image")
+                    @Html.TextBoxFor(m => m.LineItem.ImageURL, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.LineItem.Quantity, "Quantity")
+                    @Html.TextBoxFor(m => m.LineItem.Quantity, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.LineItem.Title, "Title")
+                    @Html.TextBoxFor(m => m.LineItem.Title, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.LineItem.Variation, "Variation")
+                    @Html.TextBoxFor(m => m.LineItem.Variation, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="panel panel-footer">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <button id="btnSave" class="btn btn-sm btn-primary" data-ttb-action="save">
+                            <i class="glyphicon glyphicon-floppy-disk"></i> &nbsp; Save
+                        </button>
+                        <button id="btnCancel" class="btn btn-sm btn-primary" 
+                                data-ttb-action="cancel" formnovalidate="formnovalidate">
+                            <i class="glyphicon glyphicon-remove-circle"></i> &nbsp; Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <!--END DETAIL AREA -->
+
+    <!-- BEGIN LIST AREA -->
+    if (Model.IsListAreaVisible)
+    {
+        <div class="table-responsive table">
+            <table class="table table-condensed table-bordered table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Location</th>
+                        <th class="dt-action-button-column">Edit</th>
+                        <th>Image</th>
+                        <th>Qty</th>
+                        <th>Variation</th>
+                        <th>Title</th>
+                        <!-- <th class="dt-action-button-column">Delete</th>  -->
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int rownum = 0;
+                     }
+                    @foreach (var item in Model.Entries)
+                    {
+                        <tr id="tr_@rownum" style="vertical-align:middle">
+                            <td width="100" id="td_@rownum">
+                                <input class="form-control" id="location_@item.SKU" disabled 
+                                       type="text" value="@item.Location" 
+                                       onkeydown = "if (event.keyCode == 13) document.getElementById('save_@item.SKU').click()"/>
+                            </td>
+                            <td class="dt-action-button-column">
+                                <a href="#" class="btn btn-default btn-med" 
+                                   data-ttb-edit="edit" 
+                                   data-ttb-val="@item.SKU">
+                                    <i class="glyphicon glyphicon-edit"> EDIT</i>
+                                </a>
+                                <br />
+                                <br />
+                                <a href="#" class="btn btn-default btn-med" id="save_@item.SKU"
+                                   data-ttb-save="save" 
+                                   data-ttb-val="@item.SKU">
+                                    <i class="glyphicon glyphicon-save"> SAVE</i>
+                                </a>
+                            </td>
+                            <td> <img src="@item.ImageURL" height="100" width="100"/> </td>
+                            <td>@item.Quantity</td>
+                            <td>@item.Variation</td>
+                            <td>@item.Title</td>
+                        </tr>
+                        rownum++;
+                    }
+                </tbody>
+            </table>
+        </div>
+    }   
+    <!-- END LIST AREA -->
+}
+
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+
+            // Scroll back to the row where we left off, if we are returning from a 'save' command.
+            var cmd = $("#EventCommand").val();
+            var sku = $("#EventArgument").val();
+            var loc = $("#EventArgLocation").val();
+
+            if (cmd == 'save') {
+              var i = $("#location_"+sku);
+              var trId = i.parent().parent().attr('id');        // <tr>
+              var tr = $("#"+trId)
+              var trHeight = tr.height();
+              var trRownum = trId.substring(3);          // zero indexed
+              var pos = (trRownum * trHeight) + 30;      // 30 is the height of the top menu bar
+
+              $('body').scrollTop(pos);
+            }
+
+            // Save the new Location
+            $("[data-ttb-save]").on("click", save_loc);
+            
+            function save_loc() {
+                var action = $(this).data("ttb-save");
+                var sku = $(this).data("ttb-val");
+                var loc = $("#location_" + sku).val().toUpperCase();
+
+                // add dashes to 3 character bin locations
+                if (loc.length == 3) {
+                    var floc = loc.substr(0, 1) + "-" + loc.substr(1,1) + "-" + loc.substr(2,1);
+                    loc = floc;
+                }
+
+                $("#EventCommand").val(action);
+                $("#EventArgument").val(sku);
+                $("#EventArgLocation").val(loc);
+
+                $("form").submit(); // submits/posts back to Controller
+            };
+
+            // Enable the Edit textbox
+            $("[data-ttb-edit]").on("click", function (e) {
+                e.preventDefault();
+
+                var sku = $(this).data("ttb-val");
+                var tb = $("#location_" + sku);
+                tb.removeAttr("disabled")
+                tb.select();
+            });
+
+        })
+    </script>
+}
