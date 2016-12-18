@@ -2,7 +2,7 @@
 TTB/packages/
 TTB/*/obj/Debug/
 TTB/*/bin/
-TTB/*/applicationhost.config
+TTB/.vs/
 
 # Windows image file caches
 Thumbs.db
