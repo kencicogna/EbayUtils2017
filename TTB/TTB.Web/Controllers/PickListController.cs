@@ -38,5 +38,47 @@ namespace TTB.Web.Controllers
             return View(vm);
         }
 
+        [HttpPost]
+        public ActionResult ShowDomestic(PickListViewModel vm)
+        {
+            vm.IsValid = ModelState.IsValid; // mvc sets this based on the data annotations
+            vm.HandleRequest();
+
+            if (vm.IsValid)
+            {
+                ModelState.Clear();
+            }
+            else
+            {
+                foreach (KeyValuePair<string, string> item in vm.ValidationErrors)
+                {
+                    ModelState.AddModelError(item.Key, item.Value);
+                }
+            }
+
+            return View(vm);
+        }
+
+        [HttpPost]
+        public ActionResult ShowInternational(PickListViewModel vm)
+        {
+            vm.IsValid = ModelState.IsValid; // mvc sets this based on the data annotations
+            vm.HandleRequest();
+
+            if (vm.IsValid)
+            {
+                ModelState.Clear();
+            }
+            else
+            {
+                foreach (KeyValuePair<string, string> item in vm.ValidationErrors)
+                {
+                    ModelState.AddModelError(item.Key, item.Value);
+                }
+            }
+
+            return View(vm);
+        }
+
     }
 }
