@@ -32,7 +32,7 @@ namespace TTB.Data
         public void Init()
         {
             ValidationErrors = new List<KeyValuePair<string, string>>();
-            SqlGet = "select * from Picklist";
+            SqlGet = "select * from Picklist order by location";
             SqlUpdPickList = "update Picklist set location = @location where sku = @sku";
             SqlUpdInventory = "update Inventory set location = @location where sku = @sku and active=1";
 
