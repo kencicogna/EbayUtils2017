@@ -15,5 +15,6 @@ namespace TTB.Repository
         public string Title { get; set; }
         public string Variation { get; set; }
         public string DIFlag { get; set; }
+        public bool Picked { get; set; }
     }
 }

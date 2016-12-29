@@ -33,7 +33,7 @@ namespace TTB.Data
         {
             ValidationErrors = new List<KeyValuePair<string, string>>();
             SqlGet = "select * from Picklist order by location";
-            SqlUpdPickList = "update Picklist set location = @location where sku = @sku";
+            SqlUpdPickList = "update Picklist set location = @location, item_picked=1 where sku = @sku";
             SqlUpdInventory = "update Inventory set location = @location where sku = @sku and active=1";
 
             // Defined in Web.config
@@ -193,6 +193,7 @@ namespace TTB.Data
                         lineItem.Title = Convert.ToString(dr["title"]);
                         lineItem.Variation = Convert.ToString(dr["variation"]);
                         lineItem.DIFlag = Convert.ToString(dr["di_flag"]);
+                        lineItem.Picked = (dr["item_picked"] as int? == 1) ? true : false;
 
                         PickList.Add(lineItem);
                     }

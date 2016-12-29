@@ -22,3 +22,12 @@ select,
 textarea {
     max-width: 280px;
 }
+
+/* 
+    TTB CSS Classes 
+*/
+
+/* Set Background color when an item has been picked */
+.itemPicked {
+    background-color: aqua
+}

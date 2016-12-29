@@ -23,6 +23,8 @@ namespace TTB.Common
         public string EventCommand { get; set; }
         public string EventArgument { get; set; }
         public string EventArgLocation { get; set; }
+        public string EventArgPosition { get; set; }
+        public string EventArgOrigLoc { get; set; }
         public List<KeyValuePair<string, string>> ValidationErrors { get; set; }
 
         public bool IsSearchAreaVisible { get; set; }
@@ -36,6 +38,9 @@ namespace TTB.Common
         {
             EventCommand = "List";
             EventArgument = string.Empty;
+            EventArgLocation = string.Empty;
+            EventArgPosition = string.Empty;
+            EventArgOrigLoc = string.Empty;
             ValidationErrors = new List<KeyValuePair<string, string>>();
             ListMode();
         }

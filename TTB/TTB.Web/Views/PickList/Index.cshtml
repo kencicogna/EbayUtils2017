@@ -10,9 +10,10 @@
 
     <!-- BEGIN HIDDEN FIELDS AREA -->
     @Html.HiddenFor(m => m.EventCommand)
-    @Html.HiddenFor(m => m.Mode)
     @Html.HiddenFor(m => m.EventArgument)
     @Html.HiddenFor(m => m.EventArgLocation)
+    @Html.HiddenFor(m => m.EventArgPosition)
+    @Html.HiddenFor(m => m.EventArgOrigLoc)
     <!-- END HIDDEN FIELDS AREA -->
 
     
@@ -126,7 +127,8 @@
                      }
                     @foreach (var item in Model.Entries)
                     {
-                        <tr id="tr_@rownum" style="vertical-align:middle">
+                        string rowPickedAttr = item.Picked ? "data-ttb-picked="+item.Picked : "";
+                        <tr id="tr_@rownum" style="vertical-align:middle" @rowPickedAttr>
                             <td width="100" id="td_@rownum">
                                 <input class="form-control" id="location_@item.SKU" disabled 
                                        type="text" value="@item.Location" 
@@ -135,14 +137,19 @@
                             <td class="dt-action-button-column">
                                 <a href="#" class="btn btn-default btn-med" 
                                    data-ttb-edit="edit" 
-                                   data-ttb-val="@item.SKU">
+                                   data-ttb-sku="@item.SKU">
                                     <i class="glyphicon glyphicon-edit"> EDIT</i>
                                 </a>
                                 <br />
+                                <a href="#" class="btn btn-default btn-med" 
+                                   data-ttb-cancel="cancel" 
+                                   data-ttb-sku="@item.SKU">
+                                    <i class="glyphicon glyphicon-refresh"> RESET</i>
+                                </a>
                                 <br />
-                                <a href="#" class="btn btn-default btn-med" id="save_@item.SKU"
+                                <a href="#" class="btn btn-default btn-med" id="save_@item.SKU" disabled
                                    data-ttb-save="save" 
-                                   data-ttb-val="@item.SKU">
+                                   data-ttb-sku="@item.SKU">
                                     <i class="glyphicon glyphicon-save"> SAVE</i>
                                 </a>
                             </td>
@@ -166,53 +173,97 @@
     <script>
         $(document).ready(function () {
 
-            // Scroll back to the row where we left off, if we are returning from a 'save' command.
+            // On Page Load
             var cmd = $("#EventCommand").val();
             var sku = $("#EventArgument").val();
             var loc = $("#EventArgLocation").val();
+            var row = $("#EventArgPosition").val();
+            var oloc = $("#EventArgOrigLoc").val();
 
+            $("[data-ttb-picked]").addClass("itemPicked");
+
+            // Reposition the screen after a save
             if (cmd == 'save') {
-              var i = $("#location_"+sku);
-              var trId = i.parent().parent().attr('id');        // <tr>
-              var tr = $("#"+trId)
-              var trHeight = tr.height();
-              var trRownum = trId.substring(3);          // zero indexed
-              var pos = (trRownum * trHeight) + 30;      // 30 is the height of the top menu bar
+                    var i = $("#location_"+sku);                  // <input>
+                    var trId = i.parent().parent().attr('id');    // <tr>
+                    var tr = $("#"+trId)
+                    var trHeight = tr.height();
 
-              $('body').scrollTop(pos);
-            }
+                    // if the new locatino is earlier in the list, then add one to the row count to offset it
+                    if ( loc < oloc ) {
+                        row = parseInt(row) + 1;
+                    }
 
-            // Save the new Location
+                    var pos = (row * trHeight) + 30;              // 30 is the height of the top menu bar
+
+                    $('body').scrollTop(pos);
+              }
+
+            // Define a click event on EDIT button to
+            // Enable the Location textbox for editing
+            $("[data-ttb-edit]").on("click", function (e) {
+                    e.preventDefault();
+
+                    var sku = $(this).data("ttb-sku");
+                    var tb = $("#location_" + sku);
+                $("#EventArgOrigLoc").val( tb.val() );
+
+                    var trId = tb.parent().parent().attr('id');    // <tr>
+                    var tr = $("#" + trId);                        // tr object
+                    var trHeight = tr.height();
+                    var trRownum = trId.substring(3) - 1;          // zero indexed
+                    if (trRownum < 0) trRownum = 0;
+
+                $("#EventArgPosition").val(trRownum);
+
+                    var saveBtn = $("#save_" + sku);
+                    saveBtn.removeAttr("disabled")
+                tb.removeAttr("disabled")
+                tb.select();
+                });
+
+            // Define a click event on CANCEL button to
+            // Reset the Location textbox to the original value
+            $("[data-ttb-cancel]").on("click", function (e) {
+                    e.preventDefault();
+                    var origLoc = $("#EventArgOrigLoc").val();
+                    var sku = $(this).data("ttb-sku");
+                    var tb = $("#location_" + sku);
+                    if (origLoc) {
+                        tb.val(origLoc);
+                        tb.attr("disabled","true");
+                    $("#EventArgOrigLoc").val("");
+                    }
+                });
+
+            // Define a click event on SAVE button to
+            // Save/Update the new Location in the database
             $("[data-ttb-save]").on("click", save_loc);
-            
-            function save_loc() {
-                var action = $(this).data("ttb-save");
-                var sku = $(this).data("ttb-val");
-                var loc = $("#location_" + sku).val().toUpperCase();
 
-                // add dashes to 3 character bin locations
-                if (loc.length == 3) {
-                    var floc = loc.substr(0, 1) + "-" + loc.substr(1,1) + "-" + loc.substr(2,1);
-                    loc = floc;
-                }
+                function save_loc() {
+                    var action = $(this).data("ttb-save");
+                    var sku = $(this).data("ttb-sku");
+                    var tb = $("#location_" + sku);
+                    var loc = tb.val().toUpperCase();
+
+                    if (!loc) {
+                        alert("Warning: Must supply value for location before saving");
+                        return
+                                }
+
+                    // add dashes to 3 character bin locations
+                    if (loc.length == 3) {
+                        var floc = loc.substr(0, 1) + "-" + loc.substr(1,1) + "-" + loc.substr(2,1);
+                        loc = floc;
+                    }
 
                 $("#EventCommand").val(action);
                 $("#EventArgument").val(sku);
                 $("#EventArgLocation").val(loc);
 
                 $("form").submit(); // submits/posts back to Controller
-            };
+                };
 
-            // Enable the Edit textbox
-            $("[data-ttb-edit]").on("click", function (e) {
-                e.preventDefault();
-
-                var sku = $(this).data("ttb-val");
-                var tb = $("#location_" + sku);
-                tb.removeAttr("disabled")
-                tb.select();
-            });
-
-        })
+                        })
     </script>
 }
