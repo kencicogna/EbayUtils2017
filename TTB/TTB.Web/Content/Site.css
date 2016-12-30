@@ -29,5 +29,9 @@ textarea {
 
 /* Set Background color when an item has been picked */
 .itemPicked {
-    background-color: aqua
+    background-color: aqua;
+}
+
+.myBtnWidth {
+    width: 200px;
 }
