@@ -1,7 +1,7 @@
 USE [BTData]
 GO
 
-/****** Object:  Table [dbo].[picklist]    Script Date: 12/18/2016 12:05:14 ******/
+/****** Object:  Table [dbo].[picklist]    Script Date: 01/07/2017 16:02:35 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -15,9 +15,9 @@ CREATE TABLE [dbo].[picklist](
 	[Title] [nvarchar](120) NULL,
 	[Variation] [nvarchar](64) NULL,
 	[DI_flag] [nvarchar](1) NULL,
-	[SKU] [nvarchar](50) NULL
+	[SKU] [nvarchar](50) NULL,
+	[item_picked] [int] NULL
 ) ON [PRIMARY]
 
 GO
-
 

@@ -1,7 +1,7 @@
 USE [BTData]
 GO
 
-/****** Object:  Table [dbo].[Inventory]    Script Date: 12/18/2016 12:05:32 ******/
+/****** Object:  Table [dbo].[Inventory]    Script Date: 01/07/2017 16:06:56 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -42,5 +42,4 @@ GO
 
 SET ANSI_PADDING OFF
 GO
-
 
