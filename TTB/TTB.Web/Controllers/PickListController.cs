@@ -7,6 +7,7 @@ using TTB.Data;
 
 namespace TTB.Web.Controllers
 {
+    [RoutePrefix("PickList")]
     public class PickListController : Controller
     {
         [HttpGet]
@@ -38,10 +39,20 @@ namespace TTB.Web.Controllers
             return View(vm);
         }
 
+        [HttpGet]
+        public ActionResult ShowDomestic()
+        {
+            var vm = new PickListViewModel();
+            vm.SearchEntity.DIFlag = "D";
+            vm.HandleRequest();
+            return View("Index",vm);
+        }
+
         [HttpPost]
         public ActionResult ShowDomestic(PickListViewModel vm)
         {
             vm.IsValid = ModelState.IsValid; // mvc sets this based on the data annotations
+            vm.SearchEntity.DIFlag = "D";
             vm.HandleRequest();
 
             if (vm.IsValid)
@@ -56,13 +67,23 @@ namespace TTB.Web.Controllers
                 }
             }
 
-            return View(vm);
+            return View("Index",vm);
+        }
+
+        [HttpGet]
+        public ActionResult ShowInternational()
+        {
+            var vm = new PickListViewModel();
+            vm.SearchEntity.DIFlag = "I";
+            vm.HandleRequest();
+            return View("Index",vm);
         }
 
         [HttpPost]
         public ActionResult ShowInternational(PickListViewModel vm)
         {
             vm.IsValid = ModelState.IsValid; // mvc sets this based on the data annotations
+            vm.SearchEntity.DIFlag = "I";
             vm.HandleRequest();
 
             if (vm.IsValid)
@@ -77,8 +98,9 @@ namespace TTB.Web.Controllers
                 }
             }
 
-            return View(vm);
+            return View("Index",vm);
         }
+
 
     }
 }

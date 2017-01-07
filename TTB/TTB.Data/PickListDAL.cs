@@ -32,7 +32,7 @@ namespace TTB.Data
         public void Init()
         {
             ValidationErrors = new List<KeyValuePair<string, string>>();
-            SqlGet = "select * from Picklist order by location";
+            SqlGet = "select * from Picklist order by location,title,variation";
             SqlUpdPickList = "update Picklist set location = @location, item_picked=1 where sku = @sku";
             SqlUpdInventory = "update Inventory set location = @location where sku = @sku and active=1";
 
@@ -103,7 +103,7 @@ namespace TTB.Data
                     catch (Exception ex)
                     {
                         // Log error?
-                        throw ex;
+                        throw;
                     }
                 }
             }
@@ -150,13 +150,12 @@ namespace TTB.Data
         {
             var ret = new List<PickListModel>();
 
-            // TODO: Add real data access method here
             ret = GetAllData();
 
             // Search/Filter results
-            if (!string.IsNullOrEmpty(entity.Title))
+            if (!string.IsNullOrEmpty(entity.DIFlag))
             {
-                ret = ret.FindAll(e => e.Title.ToLower().Contains(entity.Title.ToLower()));
+                ret = ret.FindAll(e => e.DIFlag.ToUpper().Equals(entity.DIFlag));
             }
 
             return ret;
