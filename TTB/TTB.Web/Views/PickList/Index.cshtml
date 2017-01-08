@@ -129,13 +129,13 @@
                     {
                         string rowPickedAttr = item.Picked ? "data-ttb-picked="+item.Picked : "";
                         <tr id="tr_@rownum" style="vertical-align:middle">
-                            <td width="100" id="td_@rownum">
+                            <td width="100" id="td_@rownum" style="vertical-align:middle">
                                 <input class="form-control" id="location_@item.SKU" disabled 
                                        type="text" value="@item.Location" data-ttb-oloc="@item.Location" 
                                        onkeydown = "if (event.keyCode == 13) document.getElementById('save_@item.SKU').click()"/>
                                 <label @rowPickedAttr disabled style="visibility:hidden">PICKED</label>
                             </td>
-                            <td class="dt-action-button-column">
+                            <td class="dt-action-button-column" style="vertical-align:middle">
                                 <a href="#" class="btn btn-default btn-med myBtnWidth"  id="edit_@item.SKU"
                                    data-ttb-edit="edit" data-ttb-sku="@item.SKU">
                                    <i class="glyphicon glyphicon-edit"> EDIT</i>
@@ -153,9 +153,9 @@
                                 </a>
                             </td>
                             <td> <img src="@item.ImageURL" height="125" width="125"/> </td>
-                            <td>@item.Quantity</td>
-                            <td>@item.Variation</td>
-                            <td>@item.Title</td>
+                            <td style="vertical-align:middle; font-size:xx-large">@item.Quantity</td>
+                            <td style="vertical-align:middle; font-size:large">@item.Variation</td>
+                            <td style="vertical-align:middle; font-size:medium">@item.Title</td>
                         </tr>
                         rownum++;
                     }
