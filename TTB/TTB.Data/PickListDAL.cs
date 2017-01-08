@@ -103,7 +103,7 @@ namespace TTB.Data
                     catch (Exception ex)
                     {
                         // Log error?
-                        throw;
+                        throw ex;
                     }
                 }
             }
