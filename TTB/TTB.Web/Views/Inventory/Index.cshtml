@@ -1,0 +1,67 @@
+﻿@model TTB.Data.InventoryViewModel
+
+@{
+    ViewBag.Title = "Inventory";
+    Layout = "_Layout.cshtml";
+}
+
+<div id="tt" class="easyui-tabs" style="width:100%;height:100%;min-height:400px;background-color:#d3ecf0;">
+    <div title="Pick List" style="padding:2px;display:none;">
+        @*Pick List Table*@ 
+        <table class="easyui-datagrid" style="width:100%;height:100%"
+               data-options="singleSelect:true,collapsible:false,url:'datagrid_data1.json',method:'get'">
+            <thead>
+                <tr>
+                    <th data-options="field:'Location',width:80">Location</th>
+                    <th data-options="field:'Quantity',width:80,align:'right'">Quantity</th>
+                    <th data-options="field:'Variation',width:100">Variation</th>
+                    <th data-options="field:'Title',width:100,align:'right'">Title</th>
+                </tr>
+            </thead>
+        </table>
+
+        <div id="pager1" class="easyui-pagination" style="background:#efefef;border:1px solid #ccc;width:100%"
+             data-options="total:200,pageSize:10"> </div> 
+    </div>
+    <div title="Inventory" data-options="closable:false" style="overflow:auto;padding:20px;display:none;">
+        @*Pick List Table*@ 
+        <table class="easyui-datagrid" title="Basic DataGrid" style="width:700px;height:250px"
+               data-options="singleSelect:true,collapsible:true,url:'datagrid_data1.json',method:'get'">
+            <thead>
+                <tr>
+                    <th data-options="field:'itemid',width:80">Item ID</th>
+                    <th data-options="field:'productid',width:100">Product</th>
+                    <th data-options="field:'listprice',width:80,align:'right'">List Price</th>
+                    <th data-options="field:'unitcost',width:80,align:'right'">Unit Cost</th>
+                    <th data-options="field:'attr1',width:250">Attribute</th>
+                    <th data-options="field:'status',width:60,align:'center'">Status</th>
+                </tr>
+            </thead>
+        </table>
+
+        <div id="pager1" class="easyui-pagination" style="background:#efefef;border:1px solid #ccc;width:100%"
+             data-options="total:2000,pageSize:50"> </div> 
+
+    </div>
+    <div title="Shipping" data-options="closable:false" style="overflow:auto;padding:20px;display:none;">
+        @*Pick List Table*@ 
+        <table class="easyui-datagrid" title="Basic DataGrid" style="width:700px;height:250px"
+               data-options="singleSelect:true,collapsible:true,url:'datagrid_data1.json',method:'get'">
+            <thead>
+                <tr>
+                    <th data-options="field:'itemid',width:80">Item ID</th>
+                    <th data-options="field:'productid',width:100">Product</th>
+                    <th data-options="field:'listprice',width:80,align:'right'">List Price</th>
+                    <th data-options="field:'unitcost',width:80,align:'right'">Unit Cost</th>
+                    <th data-options="field:'attr1',width:250">Attribute</th>
+                    <th data-options="field:'status',width:60,align:'center'">Status</th>
+                </tr>
+            </thead>
+        </table>
+
+        <div id="pager3" class="easyui-pagination" style="background:#efefef;border:1px solid #ccc;width:100%"
+             data-options="total:100,pageSize:100"> </div> 
+    </div>
+</div>
+
+

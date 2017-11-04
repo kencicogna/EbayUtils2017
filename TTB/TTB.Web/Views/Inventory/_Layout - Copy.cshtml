@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link rel="stylesheet" type="text/css" href="/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css">
+    <script type="text/javascript" src="/easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="/easyui/jquery.easyui.min.js"></script>
+</head>
+<body>
+
+    @*Header*@
+    <table style="width:100%; background-color:#d3ecf0;vertical-align:top;">
+        <tr>
+            @*Main*@
+            <td>
+                <table style="width:100%;height:100%; background-color:#d3ecf0;vertical-align:top;">
+                    <tr style="width:100%;height:100%;">
+                        @*Display Options*@
+                        <td style="width:200px">
+                            <form action="" style="width:150px;vertical-align:top;">
+                                <input type="radio" name="shiptotype" value="All Locations">All Locations<br />
+                                <input type="radio" name="shiptotype" value="All Locations">Domestic<br />
+                                <input type="radio" name="shiptotype" value="All Locations">International<br />
+                            </form>
+                        </td>
+                        @*Title*@
+                        <td style="width:100%;text-align:center;">
+                            <h1>The Teaching Toy Box</h1>
+                        </td>
+                    </tr>
+                    <tr style="width:100%;height:100%;" >
+                        <td colspan="2">
+                            
+                        </td>
+                    </tr>
+                </table>
+            </td>
+
+            @*Character*@
+            <td style="width:125px">
+                <img style="display:inline-block;" src="~/Images/fox.png" />
+            </td>
+
+            @*Shipping Calendar*@
+            <td style="width:125px;height:125px;">
+                <div style="display:inline-block;width:125px;height:125px" id="cc" class="easyui-calendar" ></div>
+            </td>
+        </tr>
+    </table>
+    <br />
+
+    @*Body*@
+    <div class="body-content" style="height:100%">  
+        @RenderBody()
+    </div>
+
+    
+    <div>
+        <img src="~/Images/theteachingtoyboxlogo.png" />
+    </div>
+        
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>
