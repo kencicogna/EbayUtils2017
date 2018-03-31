@@ -1,3 +1,7 @@
+# Vim swp files
+*.swp
+*.*~
+
 # Nuget Packages
 TTB/packages/
 TTB/*/obj/Debug/
